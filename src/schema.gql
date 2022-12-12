@@ -1,0 +1,60 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type YoutubeChannel {
+  id: Int!
+  username: String!
+  subscriberCount: String!
+  influencer: YoutubeChannel
+}
+
+type Influencer {
+  id: Int!
+  name: String!
+  influencerScore: Float
+  twitterHandle: String
+  twitterId: Float
+  twitter: TwitterUser
+  youtubeChannelHandle: String
+  youtubeChannelId: Float
+  youtubeChannel: YoutubeChannel
+}
+
+type TwitterUser {
+  id: Int!
+  twitterHandle: String!
+  followers: Float!
+  influencer: Influencer
+}
+
+type Query {
+  influencers: [Influencer!]!
+  influencer(id: Int!): Influencer!
+  twitterUsers: [TwitterUser!]!
+  twitterUser(id: Int!): TwitterUser!
+  youtubeChannels: [YoutubeChannel!]!
+  youtubeChannel(id: Int!): YoutubeChannel!
+}
+
+type Mutation {
+  createInfluencer(createInfluencerInput: CreateInfluencerInput!): Influencer!
+  updateInfluencer(updateInfluencerInput: UpdateInfluencerInput!): Influencer!
+  removeInfluencer(id: Int!): Influencer!
+  updateTwitterHandle(updateInfluencerInput: UpdateInfluencerInput!): Influencer!
+  updateYoutubeChannelUsername(updateInfluencerInput: UpdateInfluencerInput!): Influencer!
+  removeTwitterUser(id: Int!): TwitterUser!
+}
+
+input CreateInfluencerInput {
+  name: String!
+  twitterHandle: String
+  youtubeChannelHandle: String
+}
+
+input UpdateInfluencerInput {
+  name: String
+  twitterHandle: String
+  youtubeChannelHandle: String
+  id: Int!
+}
