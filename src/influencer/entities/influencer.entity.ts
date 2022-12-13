@@ -1,4 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { TwitchChannel } from "src/twitch-channel/entities/twitch-channel.entity";
 import { TwitterUser } from 'src/twitter-user/entities/twitter-user.entity';
 import { YoutubeChannel } from 'src/youtube-channel/entities/youtube-channel.entity';
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
@@ -42,12 +43,23 @@ export class Influencer {
   @Field((type) => YoutubeChannel, {nullable: true})
   youtubeChannel: YoutubeChannel
 
-  @Column({ nullable: true })
-  @Field({ nullable: true })
-  tiktokId: number
+  // @Column({ nullable: true })
+  // @Field({ nullable: true })
+  // tiktokId: number
+
+  // @Column({ nullable: true })
+  // @Field({ nullable: true })
+  // tiktokHandle: string
 
   @Column({ nullable: true })
   @Field({ nullable: true })
-  tiktokHandle: string
+  twitchChannelId: number
 
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  twitchChannelHandle: string
+
+  @OneToOne(() => TwitchChannel, (twitchChannel) => twitchChannel.influencer)
+  @Field((type) => TwitchChannel, {nullable: true})
+  twitchChannel: TwitchChannel
 }

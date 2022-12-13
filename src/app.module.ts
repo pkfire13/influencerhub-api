@@ -8,9 +8,8 @@ import { join } from 'path';
 import { InfluencerModule } from './influencer/influencer.module';
 import { TwitterUserModule } from './twitter-user/twitter-user.module';
 import { YoutubeChannelModule } from './youtube-channel/youtube-channel.module';
-import { TiktokModule } from './tiktok/tiktok.module';
-import { TiktokChannelModule } from './tiktok-channel/tiktok-channel.module';
 import { TiktokUserModule } from './tiktok-user/tiktok-user.module';
+import { TwitchChannelModule } from './twitch-channel/twitch-channel.module';
 
 @Module({
   imports: [
@@ -23,9 +22,8 @@ import { TiktokUserModule } from './tiktok-user/tiktok-user.module';
     InfluencerModule,
     TwitterUserModule,
     YoutubeChannelModule,
-    TiktokModule,
-    TiktokChannelModule,
     TiktokUserModule,
+    TwitchChannelModule,
   ],
 })
 export class AppModule {}

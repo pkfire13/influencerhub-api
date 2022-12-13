@@ -2,6 +2,13 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type TwitterUser {
+  id: Int!
+  twitterHandle: String!
+  followers: Float!
+  influencer: Influencer
+}
+
 type YoutubeChannel {
   id: Int!
   username: String!
@@ -19,13 +26,23 @@ type Influencer {
   youtubeChannelHandle: String
   youtubeChannelId: Float
   youtubeChannel: YoutubeChannel
+  twitchChannelId: Float
+  twitchChannelHandle: String
+  twitchChannel: TwitchChannel
 }
 
-type TwitterUser {
+type TwitchChannel {
   id: Int!
-  twitterHandle: String!
-  followers: Float!
+  broadcasterId: String!
+  displayName: String!
+  followerCount: Float!
+  subscriberCount: Float!
   influencer: Influencer
+}
+
+type TiktokUser {
+  """Example field (placeholder)"""
+  exampleField: Int!
 }
 
 type Query {
@@ -35,6 +52,9 @@ type Query {
   twitterUser(id: Int!): TwitterUser!
   youtubeChannels: [YoutubeChannel!]!
   youtubeChannel(id: Int!): YoutubeChannel!
+  twitchChannels: [TwitchChannel!]!
+  twitchChannel(id: Int!): TwitchChannel!
+  tiktokUser(id: Int!): TiktokUser!
 }
 
 type Mutation {
@@ -43,18 +63,35 @@ type Mutation {
   removeInfluencer(id: Int!): Influencer!
   updateTwitterHandle(updateInfluencerInput: UpdateInfluencerInput!): Influencer!
   updateYoutubeChannelUsername(updateInfluencerInput: UpdateInfluencerInput!): Influencer!
+  updateTwitchChannelHandle(updateInfluencerInput: UpdateInfluencerInput!): Influencer!
   removeTwitterUser(id: Int!): TwitterUser!
+  createTiktokUser(createTiktokUserInput: CreateTiktokUserInput!): TiktokUser!
+  updateTiktokUser(updateTiktokUserInput: UpdateTiktokUserInput!): TiktokUser!
+  removeTiktokUser(id: Int!): TiktokUser!
 }
 
 input CreateInfluencerInput {
   name: String!
   twitterHandle: String
   youtubeChannelHandle: String
+  twitchChannelHandle: String
 }
 
 input UpdateInfluencerInput {
   name: String
   twitterHandle: String
   youtubeChannelHandle: String
+  twitchChannelHandle: String
+  id: Int!
+}
+
+input CreateTiktokUserInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateTiktokUserInput {
+  """Example field (placeholder)"""
+  exampleField: Int
   id: Int!
 }

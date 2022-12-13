@@ -13,6 +13,7 @@ import { CreateInfluencerInput } from './dto/create-influencer.input';
 import { UpdateInfluencerInput } from './dto/update-influencer.input';
 import { TwitterUser } from 'src/twitter-user/entities/twitter-user.entity';
 import { YoutubeChannel } from 'src/youtube-channel/entities/youtube-channel.entity';
+import { TwitchChannel } from "src/twitch-channel/entities/twitch-channel.entity";
 
 @Resolver(() => Influencer)
 export class InfluencerResolver {
@@ -72,6 +73,13 @@ export class InfluencerResolver {
     );
   }
 
+  @Mutation(() => Influencer)
+  updateTwitchChannelHandle(
+    @Args('updateInfluencerInput') updateInfluencerInput: UpdateInfluencerInput,
+  ){
+    return this.influencerService.updateTwitchChannel(updateInfluencerInput.id, updateInfluencerInput)
+  }
+
   @ResolveField((returns) => TwitterUser)
   twitter(@Parent() influencer: Influencer): Promise<TwitterUser> {
     return this.influencerService.getTwitterUser(influencer.twitterId);
@@ -82,5 +90,10 @@ export class InfluencerResolver {
     return this.influencerService.getYoutubeChannel(
       influencer.youtubeChannelId,
     );
+  }
+
+  @ResolveField((returns) => TwitchChannel)
+  twitchChannel(@Parent() influencer: Influencer): Promise<TwitchChannel> {
+    return this.influencerService.getTwitchChannel(influencer.twitchChannelId)
   }
 }

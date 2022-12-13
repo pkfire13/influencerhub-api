@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { TwitchChannel } from 'src/twitch-channel/entities/twitch-channel.entity';
+import { TwitchChannelService } from 'src/twitch-channel/twitch-channel.service';
 import { TwitterUser } from 'src/twitter-user/entities/twitter-user.entity';
 import { TwitterUserService } from 'src/twitter-user/twitter-user.service';
 import { YoutubeChannel } from 'src/youtube-channel/entities/youtube-channel.entity';
@@ -16,6 +18,7 @@ export class InfluencerService {
     private influencersRepository: Repository<Influencer>,
     private twitterUsersService: TwitterUserService,
     private youtubeChannelService: YoutubeChannelService,
+    private twitchChannelService: TwitchChannelService,
   ) {}
 
   async create(
@@ -38,6 +41,13 @@ export class InfluencerService {
         newInfluencer.youtubeChannelHandle,
       );
       newInfluencer.youtubeChannelId = youtubeChannel.id;
+    }
+
+    if (newInfluencer.twitchChannelHandle != null) {
+      const twitchChannel = await this.createTwitchChannel(
+        newInfluencer.twitchChannelHandle,
+      );
+      newInfluencer.twitchChannelId = twitchChannel.id;
     }
 
     return this.influencersRepository.save(newInfluencer);
@@ -69,6 +79,17 @@ export class InfluencerService {
     return this.influencersRepository.remove(influencer);
   }
 
+  async createTwitterUser(twitterHandle: string) {
+    try {
+      const twitterUser = await this.twitterUsersService.createTwitterUser(
+        twitterHandle,
+      );
+      return twitterUser;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async updateTwitterUser(
     influencerId: number,
     updateInfluencerInput: UpdateInfluencerInput,
@@ -83,17 +104,6 @@ export class InfluencerService {
       };
       const updatedInfluencer = await this.update(influencerId, input);
       return updatedInfluencer;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async createTwitterUser(twitterHandle: string) {
-    try {
-      const twitterUser = await this.twitterUsersService.createTwitterUser(
-        twitterHandle,
-      );
-      return twitterUser;
     } catch (error) {
       throw error;
     }
@@ -129,7 +139,7 @@ export class InfluencerService {
     try {
       const youtubeChannel =
         await this.youtubeChannelService.createYoutubeChannel(
-          updateInfluencerInput.twitterHandle,
+          updateInfluencerInput.youtubeChannelHandle,
         );
       const input = {
         id: influencerId,
@@ -155,4 +165,48 @@ export class InfluencerService {
     return this.youtubeChannelService.findOne(youtubeChannelId);
   }
 
+  async createTwitchChannel(twitchChannelHandle: string) {
+    try {
+      const twitchChannel = await this.twitchChannelService.createTwitchChannel(
+        twitchChannelHandle,
+      );
+      return twitchChannel;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateTwitchChannel(
+    influencerId: number,
+    updateInfluencerInput: UpdateInfluencerInput,
+  ) {
+    try {
+      const twitchChannel = await this.twitchChannelService.createTwitchChannel(
+        updateInfluencerInput.twitchChannelHandle,
+      );
+      const input = {
+        id: influencerId,
+        twitchChannelId: twitchChannel.id,
+      };
+      const updatedInfluencer = await this.update(influencerId, input);
+      return updatedInfluencer;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getTwitchChannel(twitchChannelId: number): Promise<TwitchChannel> {
+    if (twitchChannelId == null) {
+      const user: TwitchChannel = {
+        id: 0,
+        broadcasterId: '',
+        displayName: '',
+        followerCount: 0,
+        subscriberCount: 0,
+        influencer: null,
+      };
+      return user;
+    }
+    return this.twitchChannelService.findOne(twitchChannelId);
+  }
 }

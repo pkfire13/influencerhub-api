@@ -10,4 +10,7 @@ export class CreateInfluencerInput {
 
   @Field({ nullable: true })
   youtubeChannelHandle?: string;
+
+  @Field({nullable: true})
+  twitchChannelHandle?: string
 }
